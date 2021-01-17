@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
+    // used for translating between codes and characters
     private static HashMap<Code, String> table = new HashMap<>() {{
         put(new Code(0, 0, 0, 0, 0), "A");
         put(new Code(0, 0, 0, 0, 1), "B");
@@ -50,8 +51,11 @@ public class Main {
         System.out.println(crypt(".!?!.?", 1, 0, 1, 1, 0));
     }
 
+    // conveniently, this method doesnt require dedicated code for descryption.
     private static String crypt(String message, int... key){
         var messageStream = new int[0];
+        // converts the message string to an array of ints between 1 and 0
+        // the hashmap defined above is sorted through to find all the associated codes and the bit arrays they store
         for (String s : message.split("")){
             var bits = table
                     .entrySet()
@@ -73,6 +77,7 @@ public class Main {
         return builder.toString();
     }
 
+    // returns an int array that has been xored with the lsfr provided
     private static int[] xor(LSFR lsfr, int[] stream){
         var result = new ArrayList<Integer>();
         for (int i : stream){

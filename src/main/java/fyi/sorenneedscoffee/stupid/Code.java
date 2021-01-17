@@ -2,6 +2,8 @@ package fyi.sorenneedscoffee.stupid;
 
 import java.util.Arrays;
 
+// literally just a container for an int array
+// a hashmap requires an object to implement hashCode and equals, and an array doesnt properly implement them
 public class Code {
     public final int[] bits;
 
