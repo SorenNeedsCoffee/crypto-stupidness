@@ -40,9 +40,10 @@ public class Main {
     put(new Code(1, 1, 0, 1, 0), ".");
     put(new Code(1, 1, 0, 1, 1), "!");
     put(new Code(1, 1, 1, 0, 0), "?");
-    put(new Code(1, 1, 1, 0, 1), new String(Character.toChars(0x1F4A9))); // poo
-    put(new Code(1, 1, 1, 1, 0), new String(Character.toChars(0x1F600))); // smiley
-    put(new Code(1, 1, 1, 1, 1), new String(Character.toChars(0x1F926))); // facepalm
+    //for code reasons, ive decided to replace the emojis with numbers. might fix later
+    put(new Code(1, 1, 1, 0, 1), "0"); // poo
+    put(new Code(1, 1, 1, 1, 0), "1"); // smiley
+    put(new Code(1, 1, 1, 1, 1), "2"); // facepalm
   }};
 
   public static void main(String[] args) {
@@ -69,6 +70,60 @@ public class Main {
       lsfrb.sample();
       System.out.println(Arrays.toString(lsfrb.getRegister()));
     }
+
+    System.out.println();
+    System.out.println("--SOLVING STUFF--");
+    var key = solve(
+        new Code(1, 1, 1, 1, 0),
+        new Code(0, 1, 1, 0, 0)
+    );
+    System.out.println(crypt("1YWTCQ!", new LSFRB(key)));
+  }
+
+  private static int[] solve(Code encryptedCharacter, Code plaintextCharacter) {
+    var encryptedArray = encryptedCharacter.bits;
+    var plaintextArray = plaintextCharacter.bits;
+
+    for (int i = 0; i < Math.pow(2, encryptedArray.length); i++) {
+      int[] key;
+      var result = new ArrayList<Integer>();
+      toBinary(i, result);
+      while (result.size() < 4) {
+        result.add(0);
+      }
+      key = result.stream().mapToInt(in -> in).toArray();
+
+      System.out.println(Arrays.toString(key));
+      if (Arrays.equals(xor(key, plaintextArray), encryptedArray)) return Arrays.copyOf(key, 4);
+    }
+
+    return null;
+  }
+
+  private static int[] toBinary(int decimal, int length){
+    var binary = new ArrayList<Integer>();
+    while(decimal > 0){
+      binary.add(decimal%2);
+      decimal = decimal/2;
+    }
+    while (binary.size() < length) {
+      binary.add(0, 0);
+    }
+
+    return binary.stream().mapToInt(i -> i).toArray();
+  }
+
+  private static void toBinary(int number, ArrayList<Integer> result) {
+    int remainder;
+
+    if (number <= 1) {
+      result.add(number);
+      return; // KICK OUT OF THE RECURSION
+    }
+
+    remainder = number % 2;
+    toBinary(number >> 1, result);
+    result.add(remainder);
   }
 
   // conveniently, this method doesnt require dedicated code for descryption.
@@ -102,6 +157,14 @@ public class Main {
     var result = new ArrayList<Integer>();
     for (int i : stream) {
       result.add((i ^ lsfr.sample()) % 2);
+    }
+    return result.stream().mapToInt(i -> i).toArray();
+  }
+
+  private static int[] xor(int[] streama, int[] streamb) {
+    var result = new ArrayList<Integer>();
+    for (int i = 0; i < streama.length; i++) {
+      result.add((streamb[i] ^ streama[i]) % 2);
     }
     return result.stream().mapToInt(i -> i).toArray();
   }
