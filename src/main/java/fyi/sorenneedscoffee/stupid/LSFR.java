@@ -1,17 +1,19 @@
 package fyi.sorenneedscoffee.stupid;
 
-public class LSFR {
-    private int[] register;
-    private boolean gen = false;
+import java.util.Arrays;
 
-    public LSFR(int... bits){
-        register = bits;
+public class LSFR {
+    private final int[] seed;
+    private int[] register;
+
+    public LSFR(int... seed){
+        this.seed = seed;
     }
 
     public int sample(){
         // for some reason the lsfr returns the last bit in the key
-        if (!gen) {
-            gen = true;
+        if (register == null) {
+            register = Arrays.copyOf(seed, seed.length);
             return register[register.length-1];
         }
 
