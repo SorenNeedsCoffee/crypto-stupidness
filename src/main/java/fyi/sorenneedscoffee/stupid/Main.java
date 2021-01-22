@@ -47,10 +47,10 @@ public class Main {
 
   public static void main(String[] args) {
       System.out.println("--THE 'CRYPTIONS--");
-    System.out.println(crypt("HI", 1, 0, 1, 1));
-    System.out.println(crypt("BLUE", 1, 1, 0, 1, 1));
-    System.out.println(crypt("?SY", 0, 1, 1, 0));
-    System.out.println(crypt(".!?!.?", 1, 0, 1, 1, 0));
+    System.out.println(crypt("HI", new LSFRA(1, 0, 1, 1)));
+    System.out.println(crypt("BLUE", new LSFRA(1, 1, 0, 1, 1)));
+    System.out.println(crypt("?SY", new LSFRA(0, 1, 1, 0)));
+    System.out.println(crypt(".!?!.?", new LSFRA(1, 0, 1, 1, 0)));
 
     System.out.println();
     System.out.println("--THE MAXIMAL BOI--");
@@ -72,7 +72,7 @@ public class Main {
   }
 
   // conveniently, this method doesnt require dedicated code for descryption.
-  private static String crypt(String message, int... key) {
+  private static String crypt(String message, LSFR lsfr) {
     var messageStream = new int[0];
     // converts the message string to an array of ints between 1 and 0
     // the hashmap defined above is sorted through to find all the associated codes and the bit arrays they store
@@ -87,7 +87,7 @@ public class Main {
       messageStream = Ints.concat(messageStream, bits);
     }
 
-    var encrypt = splitArray(xor(new LSFRA(key), messageStream), 5);
+    var encrypt = splitArray(xor(lsfr, messageStream), 5);
     var builder = new StringBuilder();
     for (int[] i : encrypt) {
       var test = table.get(new Code(i));
@@ -98,7 +98,7 @@ public class Main {
   }
 
   // returns an int array that has been xored with the lsfr provided
-  private static int[] xor(LSFRA lsfr, int[] stream) {
+  private static int[] xor(LSFR lsfr, int[] stream) {
     var result = new ArrayList<Integer>();
     for (int i : stream) {
       result.add((i ^ lsfr.sample()) % 2);
