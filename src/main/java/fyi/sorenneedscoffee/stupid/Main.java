@@ -60,6 +60,15 @@ public class Main {
         lsfrf.sample();
         System.out.println(Arrays.toString(lsfrf.getRegister()));
     }
+
+    System.out.println();
+    System.out.println("--THE SUBMAXIMAL BOI--");
+    System.out.println("i dont know if this is what you asked for but here you go^tm");
+    var lsfrb = new LSFRB(1, 1, 1, 1);
+    for (int i = 0; i < Math.pow(2, 6); i++) {
+      lsfrb.sample();
+      System.out.println(Arrays.toString(lsfrb.getRegister()));
+    }
   }
 
   // conveniently, this method doesnt require dedicated code for descryption.

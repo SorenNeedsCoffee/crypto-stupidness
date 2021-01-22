@@ -1,13 +1,13 @@
-package fyi.sorenneedscoffee.stupid;
+package fyi.sorenneedscoffee.stupid.lsfr;
 
 import java.util.Arrays;
 
-public class LSFR {
+public class LSFRB {
 
-  private final int[] seed;
+  public final int[] seed;
   private int[] register;
 
-  public LSFR(int... seed) {
+  public LSFRB(int... seed) {
     this.seed = seed;
   }
 
@@ -24,10 +24,14 @@ public class LSFR {
           System.arraycopy(register, 0, temp, 1, register.length - 1);
       }
 
-    temp[0] = (register[1] + register[temp.length - 1]) % 2;
+    temp[0] = Arrays.stream(register).sum() % 2;
 
     register = temp;
 
     return temp[temp.length - 1];
+  }
+
+  public int[] getRegister() {
+    return Arrays.copyOf(register, register.length);
   }
 }
