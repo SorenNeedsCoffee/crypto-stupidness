@@ -1,6 +1,7 @@
 package fyi.sorenneedscoffee.stupid;
 
 import com.google.common.primitives.Ints;
+import fyi.sorenneedscoffee.stupid.lsfr.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -45,10 +46,20 @@ public class Main {
   }};
 
   public static void main(String[] args) {
+      System.out.println("--THE 'CRYPTIONS--");
     System.out.println(crypt("HI", 1, 0, 1, 1));
     System.out.println(crypt("BLUE", 1, 1, 0, 1, 1));
     System.out.println(crypt("?SY", 0, 1, 1, 0));
     System.out.println(crypt(".!?!.?", 1, 0, 1, 1, 0));
+
+    System.out.println();
+    System.out.println("--THE MAXIMAL BOI--");
+    System.out.println("This is apparently called a Fibonacci Register http://repository.uobabylon.edu.iq/mirror/resources/paper_1_17528_649.pdf");
+    var lsfrf = new LSFRFibonacci(1, 1, 1, 1);
+    for (int i = 0; i < Math.pow(2, 4); i++) {
+        lsfrf.sample();
+        System.out.println(Arrays.toString(lsfrf.getRegister()));
+    }
   }
 
   // conveniently, this method doesnt require dedicated code for descryption.
@@ -67,7 +78,7 @@ public class Main {
       messageStream = Ints.concat(messageStream, bits);
     }
 
-    var encrypt = splitArray(xor(new LSFR(key), messageStream), 5);
+    var encrypt = splitArray(xor(new LSFRA(key), messageStream), 5);
     var builder = new StringBuilder();
     for (int[] i : encrypt) {
       var test = table.get(new Code(i));
@@ -78,7 +89,7 @@ public class Main {
   }
 
   // returns an int array that has been xored with the lsfr provided
-  private static int[] xor(LSFR lsfr, int[] stream) {
+  private static int[] xor(LSFRA lsfr, int[] stream) {
     var result = new ArrayList<Integer>();
     for (int i : stream) {
       result.add((i ^ lsfr.sample()) % 2);
