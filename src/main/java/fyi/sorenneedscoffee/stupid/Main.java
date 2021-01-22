@@ -78,6 +78,10 @@ public class Main {
         new Code(0, 1, 1, 0, 0)
     );
     System.out.println(crypt("1YWTCQ!", new LSFRB(key)));
+
+    System.out.println();
+    System.out.println("--GOOD LUCK, CLASSMATES--");
+    System.out.println(crypt("COCACOLA", new LSFRC(1, 0, 1, 1, 1)));
   }
 
   private static int[] solve(Code encryptedCharacter, Code plaintextCharacter) {
