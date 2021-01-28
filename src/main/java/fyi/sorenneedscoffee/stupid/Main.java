@@ -82,6 +82,12 @@ public class Main {
     System.out.println();
     System.out.println("--GOOD LUCK, CLASSMATES--");
     System.out.println(crypt("COCACOLA", new LSFRC(1, 0, 1, 1, 1)));
+
+    System.out.println();
+    System.out.println("--THE LSFRSUM--");
+    System.out.println(crypt("HELLO", new LSFRSum(0, 0, 1, 1, 0, 0)));
+    System.out.println(crypt("ROSEBUD", new LSFRSum(0, 1, 0, 0, 1, 0)));
+    System.out.println(crypt("DTQRZ2Y", new LSFRSum(0, 0, 1, 1, 1, 0)));
   }
 
   private static int[] solve(Code encryptedCharacter, Code plaintextCharacter) {

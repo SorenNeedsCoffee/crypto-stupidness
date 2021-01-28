@@ -1,5 +1,7 @@
 package fyi.sorenneedscoffee.stupid.lsfr;
 
+import java.util.Arrays;
+
 public class LSFRSum extends LSFR {
 
   private final LSFR3bit lsfr3bit;
@@ -12,7 +14,7 @@ public class LSFRSum extends LSFR {
 
   @Override
   public int sample() {
-    return (lsfr3bit.sample() ^ lsfr5bit.sample()) % 2;
+    return (lsfr3bit.sample() ^ lsfr5bit.sample());
   }
 
   @Override
@@ -26,7 +28,7 @@ public class LSFRSum extends LSFR {
 
     @Override
     protected void transformRegister(int[] arr) {
-      arr[0] = (arr[2] + arr[1]) % 2;
+      arr[0] = (register[2] + register[1]) % 2;
     }
   }
 
@@ -38,7 +40,7 @@ public class LSFRSum extends LSFR {
 
     @Override
     protected void transformRegister(int[] arr) {
-      arr[0] = (arr[1] + arr[3] + arr[4]) % 2;
+      arr[0] = (register[1] + register[3] + register[4]) % 2;
     }
   }
 }
