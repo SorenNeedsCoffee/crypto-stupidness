@@ -88,6 +88,27 @@ public class Main {
     System.out.println(crypt("HELLO", new LSFRSum(0, 0, 1, 1, 0, 0)));
     System.out.println(crypt("ROSEBUD", new LSFRSum(0, 1, 0, 0, 1, 0)));
     System.out.println(crypt("DTQRZ2Y", new LSFRSum(0, 0, 1, 1, 1, 0)));
+
+    System.out.println();
+    System.out.println("--THE SOLVE--");
+    var sumKey = solveSum("XAZBTFVCNWANF!ZZE", "YO");
+    System.out.println("got " + Arrays.toString(sumKey));
+    System.out.println(crypt("XAZBTFVCNWANF!ZZE", new LSFRSumB(sumKey)));
+  }
+
+  private static int[] solveSum(String ciphertext, String knownPlaintext){
+    // i just decided to bruteforce instead of doing the fancy way
+    for (int i = 0; i < 63; i ++) {
+      var key = new ArrayList<Integer>();
+      toBinary(i, key);
+      while (key.size() < 6) {
+        key.add(0);
+      }
+      var keyArray = key.stream().mapToInt(in -> in).toArray();
+      if (knownPlaintext.equals(crypt(ciphertext.substring(0, 2), new LSFRSumB(keyArray)))) return keyArray;
+    }
+
+    return null;
   }
 
   private static int[] solve(Code encryptedCharacter, Code plaintextCharacter) {
@@ -110,19 +131,6 @@ public class Main {
     return null;
   }
 
-  private static int[] toBinary(int decimal, int length){
-    var binary = new ArrayList<Integer>();
-    while(decimal > 0){
-      binary.add(decimal%2);
-      decimal = decimal/2;
-    }
-    while (binary.size() < length) {
-      binary.add(0, 0);
-    }
-
-    return binary.stream().mapToInt(i -> i).toArray();
-  }
-
   private static void toBinary(int number, ArrayList<Integer> result) {
     int remainder;
 
@@ -136,7 +144,7 @@ public class Main {
     result.add(remainder);
   }
 
-  // conveniently, this method doesnt require dedicated code for descryption.
+  // conveniently, this method doesnt require dedicated code for decryption.
   private static String crypt(String message, LSFR lsfr) {
     var messageStream = new int[0];
     // converts the message string to an array of ints between 1 and 0

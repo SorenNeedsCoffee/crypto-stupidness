@@ -10,6 +10,6 @@ public class LSFRB extends LSFR {
 
   @Override
   protected void transformRegister(int[] arr) {
-    arr[0] = (arr[0] + arr[arr.length-2] + arr[arr.length-1]) % 2;
+    arr[0] = (register[0] + register[arr.length-2] + register[arr.length-1]) % 2;
   }
 }
